@@ -5,90 +5,154 @@
 <title>Mutlu Yıllar Esra'm</title>
 
 <style>
-    body {
-        margin: 0;
-        width: 100vw;
-        height: 100vh;
-        background: radial-gradient(circle at top, #ffafbd, #ffc3a0);
-        overflow: hidden;
-        font-family: 'Segoe UI', sans-serif;
-        color: white;
-    }
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+    color: white;
+}
 
-    /* ÜST YAZI */
-    #top-text {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        font-size: 2.2rem;
-        font-weight: bold;
-        text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
-        z-index: 10;
-    }
+/* TIKLAMA EKRANI */
+#startScreen {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, #ff758c, #ff7eb3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    text-align: center;
+    z-index: 100;
+    cursor: pointer;
+}
 
-    /* ALT YAZI */
-    #bottom-text {
-        position: absolute;
-        bottom: 30px;
-        width: 100%;
-        text-align: center;
-        font-size: 1.5rem;
-        padding: 0 20px;
-        text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
-        z-index: 10;
-    }
+/* ÜST YAZI */
+#top-text {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    font-size: 3.2rem;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(255,255,255,0.6);
+    z-index: 5;
+}
 
-    /* ORTA EFEKTLER */
-    .float {
-        position: absolute;
-        font-size: 2.5rem;
-        animation: rise 6s linear forwards;
-        user-select: none;
-    }
+/* ALT YAZI */
+#bottom-text {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    text-align: center;
+    font-size: 2.1rem;
+    line-height: 1.4;
+    text-shadow: 0 0 15px rgba(255,255,255,0.6);
+    z-index: 5;
+    padding: 0 20px;
+}
 
-    @keyframes rise {
-        0% {
-            transform: translateY(0) scale(0.8);
-            opacity: 1;
-        }
-        100% {
-            transform: translateY(-900px) scale(1.4);
-            opacity: 0;
-        }
+/* KALP */
+.heart {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: red;
+    transform: rotate(45deg);
+    animation: floatUp 10s linear forwards;
+}
+.heart::before,
+.heart::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: red;
+    border-radius: 50%;
+}
+.heart::before {
+    top: -15px;
+    left: 0;
+}
+.heart::after {
+    left: -15px;
+    top: 0;
+}
+
+/* KAR */
+.snow {
+    position: absolute;
+    top: -10px;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: snowFall linear forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+    100% { transform: translateY(-1200px) rotate(45deg); opacity: 0; }
+}
+
+@keyframes snowFall {
+    to {
+        transform: translateY(110vh);
     }
+}
 </style>
 </head>
 
 <body>
 
-<div id="top-text">💖 Mutlu Yıllar Esra'm 💖</div>
-
-<div id="bottom-text">
-    Sana olan sevgim bu yıl da katlanarak büyümeye devam edecek,<br>
-    iyi ki benimlesin ❤️
+<div id="startScreen">
+    💖 Mutlu Yıllar Esra'm 💖<br><br>
+    Devam etmek için dokun
 </div>
 
-<!-- ARKA PLAN MÜZİK -->
-<audio autoplay loop>
+<div id="top-text">Mutlu Yıllar Esra'm</div>
+
+<div id="bottom-text">
+    Sana olan sevgim bu yıl da katlanarak büyümeye devam edecek.<br>
+    İyi ki benimlesin ❤️
+</div>
+
+<audio id="music" loop>
     <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const icons = ["❤️", "🌹", "💐", "💕", "🌸"];
+const music = document.getElementById("music");
+const startScreen = document.getElementById("startScreen");
 
-function createFloat() {
-    const el = document.createElement("div");
-    el.className = "float";
-    el.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-    el.style.left = Math.random() * window.innerWidth + "px";
-    el.style.bottom = "-60px";
-    el.style.animationDuration = (Math.random() * 2 + 4) + "s";
-    document.body.appendChild(el);
+/* MÜZİK GARANTİ */
+startScreen.addEventListener("click", () => {
+    music.play();
+    startScreen.style.display = "none";
+});
 
-    setTimeout(() => el.remove(), 7000);
-}
+/* KALPLER */
+setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.style.left = Math.random() * window.innerWidth + "px";
+    h.style.bottom = "-40px";
+    h.style.animationDuration = (Math.random() * 5 + 6) + "s";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 11000);
+}, 400);
 
-setInterval(createFloat, 300);
+/* KAR YAĞIŞI */
+setInterval(() => {
+    const s = document.createElement("div");
+    s.className = "snow";
+    s.style.left = Math.random() * window.innerWidth + "px";
+    s.style.animationDuration = (Math.random() * 5 + 5) + "s";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 10000);
+}, 150);
 </script>
 
 </body>
